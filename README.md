@@ -11,8 +11,6 @@
 
 A production-minded reliability engineering lab focused on **SLOs, observability, incident response, failure injection, automated remediation, and Kubernetes reliability**.
 
-> **Reviewing this for a role?** Start with the [5-minute recruiter/interview walkthrough](docs/recruiter-walkthrough.md) for a fast path through the SRE evidence.
-
 ## Architecture
 
 ```mermaid
@@ -46,14 +44,13 @@ flowchart LR
 - Inject controlled failures and verify recovery
 - Scan source, containers and IaC in CI
 
-## Recruiter evidence path
+## Engineering components
 
-- [Recruiter / Interview Walkthrough](docs/recruiter-walkthrough.md)
 - `app/` — instrumented service and tests
 - `observability/` — metrics, alerts and dashboards
 - `kubernetes/` — workload reliability controls
 - `chaos/` + `remediation/` — controlled failure and recovery
-- `sre/` + `runbooks/` — SLO and incident-management evidence
+- `sre/` + `runbooks/` — SLO and incident-management procedures
 - `.github/workflows/` — automated validation
 
 ## Technology
@@ -76,36 +73,30 @@ make test
 make run
 ```
 
-With Docker Compose:
-
 ```bash
 docker compose -f deploy/docker-compose.yml up --build
 ```
 
-Service endpoints:
-- `/healthz` — liveness
-- `/readyz` — readiness
-- `/metrics` — Prometheus metrics
-- `/api` — sample workload
+Service endpoints: `/healthz`, `/readyz`, `/metrics`, and `/api`.
 
 Fault injection is explicit and disabled by default. Set `FAULT_MODE=error` or `FAULT_MODE=latency` for local experiments.
 
 ## SRE model
 
-The lab uses a 99.9% availability target and a latency objective for the sample API. Error-budget policy is documented in `sre/slo.md`. Incidents are handled through detection → mitigation → recovery → learning, with no-blame postmortems.
+The lab uses a 99.9% availability target and a latency objective for the sample API. Error-budget policy is documented in `sre/slo.md`. Incidents follow detection → mitigation → recovery → learning, with blameless postmortems.
 
 ## Repository map
 
 ```text
 app/                 instrumented service and tests
 observability/       Prometheus, Alertmanager and Grafana configuration
-kubernetes/           production-style workload controls
-chaos/                controlled failure experiments
-remediation/          safe, idempotent recovery automation
-sre/                  SLOs, capacity and incident management
-runbooks/             operator procedures
-terraform/            AWS reliability reference patterns
-.github/workflows/    CI, security and chaos validation
+kubernetes/          production-style workload controls
+chaos/               controlled failure experiments
+remediation/         safe, idempotent recovery automation
+sre/                 SLOs, capacity and incident management
+runbooks/            operator procedures
+terraform/           AWS reliability reference patterns
+.github/workflows/   CI, security and chaos validation
 ```
 
 > Portfolio/reference implementation. It does not claim that production AWS resources or customer traffic are running unless explicitly stated.
