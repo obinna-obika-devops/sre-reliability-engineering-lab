@@ -10,19 +10,18 @@
 <img src="https://img.shields.io/badge/Chaos-Engineering-purple" alt="Chaos Engineering">
 </p>
 
-A production-minded reliability engineering lab focused on **SLOs, observability, incident response, failure injection, automated remediation, and Kubernetes reliability**.
+A production-minded reliability engineering lab focused on **SLOs, observability, incident response, failure injection, guarded remediation, and Kubernetes reliability**.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
     U[Client] --> A[FastAPI Service]
-    A --> M[Prometheus]
-    A --> O[OpenTelemetry]
-    M --> G[Grafana]
-    M --> R[Alert Rules]
+    A --> M[Prometheus Metrics]
+    M --> G[Grafana Dashboard]
+    M --> R[Alert + Recording Rules]
     R --> I[Incident Response]
-    I --> X[Remediation]
+    I --> X[Guarded Remediation]
     A --> F[Controlled Fault Injection]
     F --> X
     K[Kubernetes] --> A
@@ -38,7 +37,7 @@ flowchart LR
 | Metrics, alerts and dashboards | [`observability/`](observability/) |
 | Kubernetes reliability controls | [`kubernetes/`](kubernetes/) |
 | Controlled failure testing | [`chaos/`](chaos/) |
-| Automated recovery | [`remediation/`](remediation/) |
+| Guarded recovery tooling | [`remediation/`](remediation/) |
 | SLO and error-budget policy | [`sre/`](sre/) |
 | Incident procedures | [`runbooks/`](runbooks/) |
 | Infrastructure reference patterns | [`terraform/`](terraform/) |
@@ -50,23 +49,23 @@ flowchart LR
 
 ## What this demonstrates
 
-- Define SLIs/SLOs and calculate error budgets
+- Define SLIs/SLOs and reason about error budgets
 - Instrument a Python service with Prometheus metrics
 - Run repeatable reliability tests locally with Docker Compose
 - Operate workloads with Kubernetes probes, PDBs, HPA, resource limits and NetworkPolicies
-- Detect high error rate, latency and saturation with Prometheus rules
-- Practice incident response with actionable runbooks and a blameless postmortem
-- Inject controlled failures and verify recovery
-- Scan source, containers and IaC in CI
+- Detect high error rate and latency with Prometheus alert and recording rules
+- Practice incident response with actionable runbooks and blameless learning practices
+- Inject controlled failures and verify recovery behavior
+- Validate application tests, container builds, Prometheus rules, remediation dry runs and repository security in CI
 
 ## Engineering components
 
 - `app/` — instrumented service and tests
-- `observability/` — metrics, alerts and dashboards
-- `kubernetes/` — workload reliability controls
-- `chaos/` + `remediation/` — controlled failure and recovery
+- `observability/` — Prometheus configuration, alert/recording rules and Grafana dashboard
+- `kubernetes/` — workload reliability and security controls
+- `chaos/` + `remediation/` — controlled failure and guarded recovery
 - `sre/` + `runbooks/` — SLO and incident-management procedures
-- `.github/workflows/` — automated validation
+- `.github/workflows/` — CI, security scanning and chaos-scope validation
 
 ## Technology
 
@@ -75,10 +74,9 @@ flowchart LR
 | Service | FastAPI / Python |
 | Metrics | Prometheus |
 | Dashboards | Grafana |
-| Telemetry | OpenTelemetry |
 | Platform | Kubernetes / Docker Compose |
 | Reliability | SLOs / Error Budgets / PDB / HPA |
-| Failure Testing | Controlled chaos experiments |
+| Failure Testing | Chaos Mesh manifest patterns |
 | Automation | Python remediation tooling |
 
 ## Quick start
@@ -98,23 +96,23 @@ Fault injection is explicit and disabled by default. Set `FAULT_MODE=error` or `
 
 ## SRE model
 
-The lab uses a 99.9% availability target and a latency objective for the sample API. Error-budget policy is documented in `sre/slo.md`. Incidents follow detection → mitigation → recovery → learning, with blameless postmortems.
+The lab uses a 99.9% availability target and a latency objective for the sample API. Error-budget policy is documented in `sre/slo.md`. Incidents follow detection → mitigation → recovery → learning, with blameless postmortem practices.
 
 ## Repository map
 
 ```text
 app/                 instrumented service and tests
-observability/       Prometheus, Alertmanager and Grafana configuration
+observability/       Prometheus rules/configuration and Grafana dashboard
 kubernetes/          production-style workload controls
 chaos/               controlled failure experiments
-remediation/         safe, idempotent recovery automation
+remediation/         guarded recovery automation
 sre/                 SLOs, capacity and incident management
 runbooks/            operator procedures
 terraform/           AWS reliability reference patterns
 .github/workflows/   CI, security and chaos validation
 ```
 
-> Portfolio/reference implementation. It does not claim that production AWS resources or customer traffic are running unless explicitly stated.
+> Reference implementation. It does not claim that production AWS resources or customer traffic are running unless explicitly stated.
 
 ## Engineering principles
 
