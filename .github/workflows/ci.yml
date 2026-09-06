@@ -35,8 +35,9 @@ jobs:
     - name: Validate Prometheus rules
       run: |
         docker run --rm \
+          --entrypoint /bin/promtool \
           -v "$PWD/observability:/etc/prometheus:ro" \
           prom/prometheus:v3.5.0 \
-          promtool check rules \
+          check rules \
           /etc/prometheus/rules.yml \
           /etc/prometheus/recording-rules.yml
