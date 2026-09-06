@@ -3,6 +3,7 @@
 <p align="center"><strong>Measure reliability. Inject failure. Recover safely. Learn continuously.</strong></p>
 
 <p align="center">
+<a href="https://github.com/obinna-obika-devops/sre-reliability-engineering-lab/actions/workflows/ci.yml"><img src="https://github.com/obinna-obika-devops/sre-reliability-engineering-lab/actions/workflows/ci.yml/badge.svg" alt="SRE CI"></a>
 <img src="https://img.shields.io/badge/SRE-SLOs%20%26%20Error%20Budgets-1f6feb" alt="SRE">
 <img src="https://img.shields.io/badge/Observability-Prometheus%20%2B%20Grafana-orange" alt="Observability">
 <img src="https://img.shields.io/badge/Kubernetes-Reliability-326CE5?logo=kubernetes" alt="Kubernetes">
@@ -28,6 +29,20 @@ flowchart LR
     K --> P[Probes / HPA / PDB / NetworkPolicy]
     X --> K
 ```
+
+## Reliability evidence
+
+| Reliability area | Inspectable evidence |
+|---|---|
+| Instrumented service | [`app/`](app/) |
+| Metrics, alerts and dashboards | [`observability/`](observability/) |
+| Kubernetes reliability controls | [`kubernetes/`](kubernetes/) |
+| Controlled failure testing | [`chaos/`](chaos/) |
+| Automated recovery | [`remediation/`](remediation/) |
+| SLO and error-budget policy | [`sre/`](sre/) |
+| Incident procedures | [`runbooks/`](runbooks/) |
+| Infrastructure reference patterns | [`terraform/`](terraform/) |
+| CI validation | [`.github/workflows/`](.github/workflows/) |
 
 ## Reliability loop
 
