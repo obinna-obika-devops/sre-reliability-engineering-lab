@@ -11,6 +11,8 @@
 
 A production-minded reliability engineering lab focused on **SLOs, observability, incident response, failure injection, automated remediation, and Kubernetes reliability**.
 
+> **Reviewing this for a role?** Start with the [5-minute recruiter/interview walkthrough](docs/recruiter-walkthrough.md) for a fast path through the SRE evidence.
+
 ## Architecture
 
 ```mermaid
@@ -43,6 +45,16 @@ flowchart LR
 - Practice incident response with actionable runbooks and a blameless postmortem
 - Inject controlled failures and verify recovery
 - Scan source, containers and IaC in CI
+
+## Recruiter evidence path
+
+- [Recruiter / Interview Walkthrough](docs/recruiter-walkthrough.md)
+- `app/` — instrumented service and tests
+- `observability/` — metrics, alerts and dashboards
+- `kubernetes/` — workload reliability controls
+- `chaos/` + `remediation/` — controlled failure and recovery
+- `sre/` + `runbooks/` — SLO and incident-management evidence
+- `.github/workflows/` — automated validation
 
 ## Technology
 
