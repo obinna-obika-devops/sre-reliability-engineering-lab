@@ -1,0 +1,21 @@
+groups:
+- name: sre-api
+  rules:
+  - alert: HighErrorRate
+    expr: sum(rate(http_requests_total{path="/api",status=~"5.."}[5m])) / sum(rate(http_requests_total{path="/api"}[5m])) > 0.01
+    for: 5m
+    labels: {severity: critical}
+    annotations:
+      summary: API error budget burn is elevated
+  - alert: HighLatency
+    expr: histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{path="/api"}[5m])) by (le)) > 0.5
+    for: 10m
+    labels: {severity: warning}
+    annotations:
+      summary: API p99 latency exceeds 500ms
+  - alert: NoTraffic
+    expr: absent(up{job="reliability-api"})
+    for: 2m
+    labels: {severity: critical}
+    annotations:
+      summary: Reliability API is not being scraped

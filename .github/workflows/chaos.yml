@@ -1,0 +1,14 @@
+name: Chaos validation
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 3 * * 6'
+jobs:
+  validate-experiments:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Validate chaos manifests are scoped
+      run: |
+        grep -q 'namespaces: \[reliability\]' chaos/pod-kill.yaml
+        grep -q 'mode: one' chaos/pod-kill.yaml

@@ -1,0 +1,16 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: app/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      FAULT_MODE: "none"
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ../observability/rules.yml:/etc/prometheus/rules.yml:ro

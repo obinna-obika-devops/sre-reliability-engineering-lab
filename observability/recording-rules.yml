@@ -1,0 +1,10 @@
+groups:
+- name: recording
+  interval: 30s
+  rules:
+  - record: api:error_rate5m
+    expr: sum(rate(http_requests_total{path="/api",status=~"5.."}[5m])) / sum(rate(http_requests_total{path="/api"}[5m]))
+  - record: api:availability5m
+    expr: 1 - api:error_rate5m
+  - record: api:p99_latency5m
+    expr: histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{path="/api"}[5m])) by (le))

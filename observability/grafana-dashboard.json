@@ -1,0 +1,10 @@
+{
+  "title": "SRE Reliability Overview",
+  "schemaVersion": 39,
+  "panels": [
+    {"type":"timeseries","title":"Availability","targets":[{"expr":"api:availability5m","legendFormat":"availability"}]},
+    {"type":"timeseries","title":"Error rate","targets":[{"expr":"api:error_rate5m","legendFormat":"5xx ratio"}]},
+    {"type":"timeseries","title":"P99 latency","targets":[{"expr":"api:p99_latency5m","legendFormat":"p99"}]}
+  ],
+  "templating": {"list": []}
+}
