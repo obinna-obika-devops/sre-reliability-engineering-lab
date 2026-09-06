@@ -2,6 +2,10 @@ name: CI
 on:
   push:
   pull_request:
+
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -9,8 +13,30 @@ jobs:
       PYTHONPATH: .
     steps:
     - uses: actions/checkout@v4
+
     - uses: actions/setup-python@v5
       with: {python-version: '3.12'}
-    - run: pip install -r app/requirements.txt
-    - run: pytest app/tests -q
-    - run: python -m compileall app
+
+    - name: Install dependencies
+      run: pip install -r app/requirements.txt
+
+    - name: Run API tests
+      run: pytest app/tests -q
+
+    - name: Compile Python modules
+      run: python -m compileall app remediation
+
+    - name: Validate remediation dry run
+      run: python remediation/restart_deployment.py default reliability-api --dry-run
+
+    - name: Build application image
+      run: docker build -f app/Dockerfile -t reliability-api:ci .
+
+    - name: Validate Prometheus rules
+      run: |
+        docker run --rm \
+          -v "$PWD/observability:/etc/prometheus:ro" \
+          prom/prometheus:v3.5.0 \
+          promtool check rules \
+          /etc/prometheus/rules.yml \
+          /etc/prometheus/recording-rules.yml
